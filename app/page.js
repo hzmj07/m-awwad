@@ -21,7 +21,7 @@ export default function Home() {
         <p className="text-lg md:text-2xl mb-10 font-light tracking-wide">
           Sokak Fotoğrafçılığı | Kentsel yaşamın özünü lensimle yakalıyorum
         </p>
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-row gap-4">
           <Link
             href="/portfolio"
             className="inline-block bg-white text-black font-light px-8 py-4 text-lg tracking-wide hover:bg-gray-100 transition duration-300 no-underline"
