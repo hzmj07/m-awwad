@@ -6,7 +6,8 @@ export default function Portfolio() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const API_URL = "/api/portfolio";
+  const IMGUR_URL = "https://api.imgur.com/3/album/t65QDBn/images";
+  const CLIENT_ID = "5aeed7fead99270";
 
   useEffect(() => {
     let retryCount = 0;
@@ -14,30 +15,38 @@ export default function Portfolio() {
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch(API_URL);
+
+        const res = await fetch(IMGUR_URL, {
+          method: "GET",
+          headers: {
+            Authorization: `Client-ID ${CLIENT_ID}`,
+          },
+        });
+
         if (res.status === 429 && retryCount < 3) {
           retryCount++;
           setTimeout(fetchImages, 1000 * retryCount);
           return;
         }
+
         if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
         const data = await res.json();
         if (data.data) setImages(data.data);
-        else throw new Error(data.error || "No data");
+        else throw new Error("No image data found");
       } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
+
     fetchImages();
-    // eslint-disable-next-line
   }, []);
 
   return (
     <section className="relative py-20 min-h-screen bg-white">
       {/* Background */}
-     <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0">
         <img
           src="https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=1920&q=80"
           alt="Sokak Fotoğrafçılığı"
@@ -52,7 +61,9 @@ export default function Portfolio() {
         </h1>
         {loading ? (
           <div className="flex items-center justify-center py-32 w-full">
-            <span className="text-lg text-gray-700 animate-pulse">Loading portfolio...</span>
+            <span className="text-lg text-gray-700 animate-pulse">
+              Loading portfolio...
+            </span>
           </div>
         ) : error ? (
           <div className="flex items-center justify-center py-32 w-full">
@@ -81,7 +92,9 @@ export default function Portfolio() {
           </div>
         ) : (
           <div className="flex items-center justify-center py-32 w-full">
-            <span className="text-lg text-gray-700">No images found in the portfolio.</span>
+            <span className="text-lg text-gray-700">
+              No images found in the portfolio.
+            </span>
           </div>
         )}
       </div>
