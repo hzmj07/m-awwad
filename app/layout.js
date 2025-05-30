@@ -1,6 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Layout from "../components/Layout";
+import { StrictMode } from 'react'
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,7 +25,10 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Layout>{children}</Layout>
+        <StrictMode> {/* Bu satırı kaldırın */}
+           <Layout>{children}</Layout>
+        </StrictMode>
+      
       </body>
     </html>
   );
