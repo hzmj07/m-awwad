@@ -1,20 +1,20 @@
 export default function Contact() {
   return (
     <div className="relative min-h-screen bg-white overflow-hidden pt-32 pb-20 px-6">
-      {/* Hafif arka plan görseli ve beyaz overlay */}
+      {/* Light background image and white overlay */}
       <div className="absolute inset-0 z-0">
         <img
           src="https://i.imgur.com/PVj0PKI.jpeg"
-          alt="Sokak Fotoğrafçılığı"
+          alt="Street Photography"
           className="w-full h-full object-cover object-center bg-white opacity-40"
         />
       </div>
 
       <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center justify-center min-h-[60vh]">
-        <h1 className="text-4xl md:text-5xl font-light mb-8 text-black text-center">İLETİŞİM</h1>
+        <h1 className="text-4xl md:text-5xl font-light mb-8 text-black text-center">CONTACT</h1>
         <p className="text-lg md:text-xl text-gray-800 mb-10 text-start font-light">
-          Benimle iletişime geçmek veya iş birliği yapmak için sosyal medya hesaplarımı kullanabilirsiniz.<br />
-          Her türlü soru ve görüşleriniz için Instagram üzerinden mesaj atabilirsiniz.
+          You can use my social media accounts to get in touch with me or collaborate.<br />
+          For any questions and feedback, you can send me a message on Instagram.
         </p>
         <div className="flex flex-row gap-6 justify-center">
           <a
@@ -38,7 +38,7 @@ export default function Contact() {
               <path d="M4 8l8 5 8-5" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               <rect x="4" y="8" width="16" height="8" rx="2" stroke="#000" strokeWidth="1.5"/>
             </svg>
-            E-posta
+            Email
           </a>
         </div>
       </div>
