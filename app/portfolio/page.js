@@ -1,123 +1,87 @@
 "use client";
 import { useEffect, useState } from "react";
 
-const ALBUM_ID = "t65QDBn";
-const CLIENT_ID = "5aeed7fead99270";
-
 export default function Portfolio() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const API_URL = "/api/portfolio";
+
   useEffect(() => {
-    const fetchImgurAlbum = async () => {
+    let retryCount = 0;
+    const fetchImages = async () => {
       try {
         setLoading(true);
         setError(null);
-        
-        // Rate limit için delay ekle
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        const response = await fetch(
-          `https://api.imgur.com/3/album/${ALBUM_ID}/images`,
-          {
-            headers: {
-              "Authorization": `Client-ID ${CLIENT_ID}`,
-            },
-          }
-        );
-
-        if (response.status === 429) {
-          // Rate limit hit - retry after delay
-          console.log("Rate limit hit, retrying in 5 seconds...");
-          await new Promise(resolve => setTimeout(resolve, 5000));
-          return fetchImgurAlbum(); // Retry
+        const res = await fetch(API_URL);
+        if (res.status === 429 && retryCount < 3) {
+          retryCount++;
+          setTimeout(fetchImages, 1000 * retryCount);
+          return;
         }
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        console.log("API Response:", data);
-        
-        if (data.success && data.data) {
-          setImages(data.data);
-        } else {
-          throw new Error("Invalid response format");
-        }
-
-      } catch (error) {
-        console.error("Imgur fetch error:", error);
-        if (error.message.includes('429')) {
-          setError("Too many requests. Please wait a moment and refresh the page.");
-        } else {
-          setError(error.message);
-        }
+        if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
+        const data = await res.json();
+        if (data.data) setImages(data.data);
+        else throw new Error(data.error || "No data");
+      } catch (err) {
+        setError(err.message);
       } finally {
         setLoading(false);
       }
     };
-
-    // Component mount olduğunda hemen çağırma, biraz bekle
-    const timer = setTimeout(fetchImgurAlbum, 500);
-    return () => clearTimeout(timer);
+    fetchImages();
+    // eslint-disable-next-line
   }, []);
 
-  if (loading) {
-    return (
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center text-lg py-20">Loading portfolio...</div>
-        </div>
-      </section>
-    );
-  }
-
-  if (error) {
-    return (
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center text-red-500 py-20">
-            Error loading portfolio: {error}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   return (
-    <section className="py-20">
-      <div className="max-w-7xl mx-auto px-6">
-        <h1 className="text-4xl font-light text-center mb-16 tracking-wide">
+    <section className="relative py-20 min-h-screen bg-white">
+      {/* Background */}
+     <div className="absolute inset-0 z-0">
+        <img
+          src="https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=1920&q=80"
+          alt="Sokak Fotoğrafçılığı"
+          className="w-full h-full object-cover object-center bg-white opacity-40"
+        />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 flex flex-col items-center">
+        <h1 className="text-4xl font-light text-center mb-16 tracking-wide text-black">
           PORTFOLIO
         </h1>
-        
-        {images.length === 0 ? (
-          <div className="text-center text-lg py-20">No images found</div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {images.map((image, idx) => (
+        {loading ? (
+          <div className="flex items-center justify-center py-32 w-full">
+            <span className="text-lg text-gray-700 animate-pulse">Loading portfolio...</span>
+          </div>
+        ) : error ? (
+          <div className="flex items-center justify-center py-32 w-full">
+            <span className="text-red-500 text-lg">{error}</span>
+          </div>
+        ) : images.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 w-full">
+            {images.map((image) => (
               <div
-                key={image.id || idx}
-                className="group relative overflow-hidden aspect-[3/4] bg-gray-100 rounded-lg shadow-lg"
+                key={image.id}
+                className="relative group rounded-xl overflow-hidden shadow-lg bg-white transition-transform duration-300 hover:scale-105"
               >
                 <img
                   src={image.link}
-                  alt={image.description || image.title || `Portfolio image ${idx + 1}`}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  onError={(e) => {
-                    console.error("Image load error:", image.link);
-                    e.target.style.display = 'none';
-                  }}
+                  alt={image.title || "Portfolio Image"}
+                  className="w-full h-72 object-cover"
+                  loading="lazy"
                 />
-                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <span className="text-white text-lg tracking-wide font-medium">
-                    {image.description || image.title || "Untitled"}
-                  </span>
-                </div>
+                {image.title && (
+                  <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white text-sm p-3 text-center">
+                    {image.title}
+                  </div>
+                )}
               </div>
             ))}
+          </div>
+        ) : (
+          <div className="flex items-center justify-center py-32 w-full">
+            <span className="text-lg text-gray-700">No images found in the portfolio.</span>
           </div>
         )}
       </div>

@@ -25,10 +25,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <StrictMode> {/* Bu satırı kaldırın */}
+        <StrictMode>
            <Layout>{children}</Layout>
         </StrictMode>
-      
       </body>
     </html>
   );
