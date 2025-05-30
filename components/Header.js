@@ -60,10 +60,11 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-0 items-center justify-center flex z-0 w-full h-screen bg-gray-900">
-          <div className="flex flex-col items-center py-4 space-y-4 text-black font-light tracking-wide text-sm">
+        <div className="md:hidden fixed inset-0 bg-white/80 backdrop-blur-lg z-50 animate-slideIn">
+          <div className="relative flex flex-col items-center justify-center h-full py-4 space-y-4">
             <button 
-              className="absolute top-0 right-0 p-6 text-black"
+              className="absolute top-0 right-0 p-6 text-black animate-fadeIn"
+              style={{ animationDelay: '0.2s' }}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -71,7 +72,8 @@ export default function Header() {
               </svg>
             </button>
             <button 
-              className="w-full text-2xl bg-white text-black p-3 rounded-xl transition-all duration-300 hover:bg-gray-100 hover:scale-105 hover:shadow-lg"
+              className="w-full max-w-xs text-2xl bg-white/90 backdrop-blur-sm text-black p-3 rounded-xl transition-all duration-300 hover:bg-gray-100 hover:scale-105 hover:shadow-lg animate-fadeInUp"
+              style={{ animationDelay: '0.3s' }}
               onClick={() => {
                 router.push('/');
                 setIsMenuOpen(false);
@@ -80,7 +82,8 @@ export default function Header() {
               HOME
             </button>
             <button 
-              className="w-full text-2xl bg-white text-black p-3 rounded-xl transition-all duration-300 hover:bg-gray-100 hover:scale-105 hover:shadow-lg"
+              className="w-full max-w-xs text-2xl bg-white/90 backdrop-blur-sm text-black p-3 rounded-xl transition-all duration-300 hover:bg-gray-100 hover:scale-105 hover:shadow-lg animate-fadeInUp"
+              style={{ animationDelay: '0.4s' }}
               onClick={() => {
                 router.push('/about');
                 setIsMenuOpen(false);
@@ -89,7 +92,8 @@ export default function Header() {
               ABOUT
             </button>
             <button 
-              className="w-full text-2xl bg-white text-black p-3 rounded-xl transition-all duration-300 hover:bg-gray-100 hover:scale-105 hover:shadow-lg"
+              className="w-full max-w-xs text-2xl bg-white/90 backdrop-blur-sm text-black p-3 rounded-xl transition-all duration-300 hover:bg-gray-100 hover:scale-105 hover:shadow-lg animate-fadeInUp"
+              style={{ animationDelay: '0.5s' }}
               onClick={() => {
                 router.push('/portfolio');
                 setIsMenuOpen(false);
@@ -98,7 +102,8 @@ export default function Header() {
               PORTFOLIO
             </button>
             <button 
-              className="w-full text-2xl bg-white text-black p-3 rounded-xl transition-all duration-300 hover:bg-gray-100 hover:scale-105 hover:shadow-lg"
+              className="w-full max-w-xs text-2xl bg-white/90 backdrop-blur-sm text-black p-3 rounded-xl transition-all duration-300 hover:bg-gray-100 hover:scale-105 hover:shadow-lg animate-fadeInUp"
+              style={{ animationDelay: '0.6s' }}
               onClick={() => {
                 router.push('/contact');
                 setIsMenuOpen(false);
