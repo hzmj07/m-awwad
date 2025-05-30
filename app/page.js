@@ -6,7 +6,7 @@ export default function Home() {
       {/* Arka Plan Görseli */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=1920&q=80"
+          src="https://i.imgur.com/PVj0PKI.jpeg"
           alt="Sokak Fotoğrafçılığı"
           className="w-full h-full object-cover object-center bg-white opacity-40"
         />
@@ -26,13 +26,13 @@ export default function Home() {
             href="/portfolio"
             className="inline-block bg-black text-white font-light px-8 py-4 text-lg tracking-wide hover:bg-gray-900 hover:text-white transition duration-300 no-underline rounded-xl"
           >
-            Portfolyo
+            PORTFOLIO
           </Link>
           <Link
             href="/contact"
             className="inline-block border border-black text-black font-light px-8 py-4 text-lg tracking-wide hover:bg-black hover:text-white transition duration-300 no-underline rounded-xl"
           >
-            İletişim
+            CONTACT
           </Link>
         </div>
       </div>

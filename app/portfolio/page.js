@@ -48,7 +48,7 @@ export default function Portfolio() {
       {/* Background */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=1920&q=80"
+          src="https://i.imgur.com/PVj0PKI.jpeg"
           alt="Sokak Fotoğrafçılığı"
           className="w-full h-full object-cover object-center bg-white opacity-40"
         />
