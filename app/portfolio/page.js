@@ -73,18 +73,18 @@ export default function Portfolio() {
 
       {/* Modal */}
       {selectedImage && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 bg-opacity-80 p-6">
           <div className="relative w-full max-w-5xl aspect-video">
             <img
               src={selectedImage.link}
               alt={selectedImage.title || "Selected Image"}
               className="w-full h-full object-cover rounded-3xl"
             />
-            {selectedImage.title && (
+       
               <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-sm p-3 text-center rounded-b-3xl">
-                {selectedImage.title}
+                {selectedImage.title || "No Title"}
               </div>
-            )}
+          
             <button
               onClick={() => setSelectedImage(null)}
               className="absolute top-4 right-4"
