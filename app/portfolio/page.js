@@ -82,7 +82,7 @@ export default function Portfolio() {
             />
        
               <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-sm p-3 text-center rounded-b-3xl">
-                {selectedImage.title || "No Title"}
+                {selectedImage.description || "No Title"}
               </div>
           
             <button
