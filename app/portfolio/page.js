@@ -1,11 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
+import { FaWindowClose } from "react-icons/fa";
 
 export default function Portfolio() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const [selecetedImg, setselecetedImg] = useState("ss");
   const IMGUR_URL = "https://api.imgur.com/3/album/t65QDBn/images";
   const CLIENT_ID = "5aeed7fead99270";
 
@@ -53,7 +54,21 @@ export default function Portfolio() {
           className="w-full h-full object-cover object-center bg-white opacity-40"
         />
       </div>
-
+      {selecetedImg && (
+        <div className=" absolute inset-0 z-100  flex w-full h-full p-6" >
+          <img
+            src={selecetedImg.link}
+            alt="Selected"
+            className="w-full h-full object-cover object-center bg-black rounded-3xl"
+          />
+          <button
+            className="absolute top-4 right-4  justify-center items-center flex  text-black rounded-full"
+            onClick={() => setselecetedImg(null)}
+          >
+            <FaWindowClose color="white" size={26}/>
+          </button>
+        </div>
+      )}
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 flex flex-col items-center">
         <h1 className="text-4xl font-light text-center mb-16 tracking-wide text-black">
@@ -73,6 +88,7 @@ export default function Portfolio() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 w-full">
             {images.map((image) => (
               <div
+                onClick={() => setselecetedImg(image)}
                 key={image.id}
                 className="relative group rounded-xl overflow-hidden shadow-lg bg-white transition-transform duration-300 hover:scale-105"
               >
