@@ -1,54 +1,57 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { FaWindowClose } from "react-icons/fa";
+
+const IMGUR_API_URL = "https://api.imgur.com/3/album/t65QDBn/images";
+const IMGUR_CLIENT_ID = "5aeed7fead99270";
 
 export default function Portfolio() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selecetedImg, setselecetedImg] = useState();
-  const IMGUR_URL = "https://api.imgur.com/3/album/t65QDBn/images";
-  const CLIENT_ID = "5aeed7fead99270";
+  const [selectedImage, setSelectedImage] = useState(null);
 
-  // Disable scroll when modal is open
+  // Disable background scroll when modal is open
   useEffect(() => {
-    if (selecetedImg) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    // Cleanup on unmount
+    document.body.style.overflow = selectedImage ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [selecetedImg]);
+  }, [selectedImage]);
 
   useEffect(() => {
     let retryCount = 0;
+
     const fetchImages = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        const res = await fetch(IMGUR_URL, {
-          method: "GET",
+        const response = await fetch(IMGUR_API_URL, {
           headers: {
-            Authorization: `Client-ID ${CLIENT_ID}`,
+            Authorization: `Client-ID ${IMGUR_CLIENT_ID}`,
           },
         });
 
-        if (res.status === 429 && retryCount < 3) {
+        if (response.status === 429 && retryCount < 3) {
           retryCount++;
           setTimeout(fetchImages, 1000 * retryCount);
           return;
         }
 
-        if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
-        const data = await res.json();
-        if (data.data) setImages(data.data);
-        else throw new Error("No image data found");
+        if (!response.ok) {
+          throw new Error(`HTTP error: ${response.status}`);
+        }
+
+        const result = await response.json();
+        if (result.data) {
+          setImages(result.data);
+        } else {
+          throw new Error("No image data received");
+        }
       } catch (err) {
-        setError(err.message);
+        setError(err.message || "An unknown error occurred.");
       } finally {
         setLoading(false);
       }
@@ -59,53 +62,58 @@ export default function Portfolio() {
 
   return (
     <section className="relative py-20 min-h-screen bg-white">
-      {/* Background */}
+      {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
           src="https://i.imgur.com/PVj0PKI.jpeg"
-          alt="Sokak Fotoğrafçılığı"
-          className="w-full h-full object-cover object-center bg-white opacity-40"
+          alt="Portfolio Background"
+          className="w-full h-full object-cover opacity-40"
         />
       </div>
-      {selecetedImg && (
-        <div className="absolute inset-0 z-100 flex w-full max-h-screen p-6 items-center justify-center bg-black/80">
-          <div className="relative w-full max-w-5xl aspect-video flex items-center justify-center">
+
+      {/* Modal */}
+      {selectedImage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 p-6">
+          <div className="relative w-full max-w-5xl aspect-video">
             <img
-              src={selecetedImg.link}
-              alt="Selected"
-              className="w-full h-full object-cover object-center rounded-3xl"
+              src={selectedImage.link}
+              alt={selectedImage.title || "Selected Image"}
+              className="w-full h-full object-cover rounded-3xl"
             />
             <button
-              className="absolute top-4 right-4 justify-center items-center flex text-black rounded-full"
-              onClick={() => setselecetedImg(null)}
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-4 right-4"
+              aria-label="Close Modal"
             >
               <FaWindowClose color="white" size={32} />
             </button>
           </div>
         </div>
       )}
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 flex flex-col items-center">
-        <h1 className="text-4xl font-light text-center mb-16 tracking-wide text-black">
+
+      {/* Main Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
+        <h1 className="text-4xl font-light text-center text-black mb-16 tracking-wide">
           PORTFOLIO
         </h1>
+
         {loading ? (
-          <div className="flex items-center justify-center py-32 w-full">
-            <span className="text-lg text-gray-700 animate-pulse">
+          <div className="flex justify-center items-center py-32">
+            <span className="text-gray-700 text-lg animate-pulse">
               Loading portfolio...
             </span>
           </div>
         ) : error ? (
-          <div className="flex items-center justify-center py-32 w-full">
+          <div className="flex justify-center items-center py-32">
             <span className="text-red-500 text-lg">{error}</span>
           </div>
         ) : images.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {images.map((image) => (
               <div
-                onClick={() => setselecetedImg(image)}
                 key={image.id}
-                className="relative group rounded-xl overflow-hidden shadow-lg bg-white transition-transform duration-300 hover:scale-105"
+                onClick={() => setSelectedImage(image)}
+                className="cursor-pointer rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105 group"
               >
                 <img
                   src={image.link}
@@ -114,7 +122,7 @@ export default function Portfolio() {
                   loading="lazy"
                 />
                 {image.title && (
-                  <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white text-sm p-3 text-center">
+                  <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-sm p-3 text-center">
                     {image.title}
                   </div>
                 )}
@@ -122,9 +130,9 @@ export default function Portfolio() {
             ))}
           </div>
         ) : (
-          <div className="flex items-center justify-center py-32 w-full">
-            <span className="text-lg text-gray-700">
-              No images found in the portfolio.
+          <div className="flex justify-center items-center py-32">
+            <span className="text-gray-700 text-lg">
+              No images available in the portfolio.
             </span>
           </div>
         )}
