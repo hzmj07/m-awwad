@@ -55,18 +55,20 @@ export default function Portfolio() {
         />
       </div>
       {selecetedImg && (
-        <div className=" absolute inset-0 z-100  flex w-full h-full p-6" >
-          <img
-            src={selecetedImg.link}
-            alt="Selected"
-            className="w-full h-full object-cover object-center bg-black rounded-3xl"
-          />
-          <button
-            className="absolute top-4 right-4  justify-center items-center flex  text-black rounded-full"
-            onClick={() => setselecetedImg(null)}
-          >
-            <FaWindowClose color="white" size={26}/>
-          </button>
+        <div className="absolute inset-0 z-100 flex w-full h-full p-6 items-center justify-center bg-black/80">
+          <div className="relative w-full max-w-5xl aspect-video flex items-center justify-center">
+            <img
+              src={selecetedImg.link}
+              alt="Selected"
+              className="w-full h-full object-cover object-center rounded-3xl"
+            />
+            <button
+              className="absolute top-4 right-4 justify-center items-center flex text-black rounded-full"
+              onClick={() => setselecetedImg(null)}
+            >
+              <FaWindowClose color="white" size={32} />
+            </button>
+          </div>
         </div>
       )}
       {/* Content */}
