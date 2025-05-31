@@ -6,9 +6,22 @@ export default function Portfolio() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selecetedImg, setselecetedImg] = useState("ss");
+  const [selecetedImg, setselecetedImg] = useState();
   const IMGUR_URL = "https://api.imgur.com/3/album/t65QDBn/images";
   const CLIENT_ID = "5aeed7fead99270";
+
+  // Disable scroll when modal is open
+  useEffect(() => {
+    if (selecetedImg) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selecetedImg]);
 
   useEffect(() => {
     let retryCount = 0;
