@@ -80,6 +80,11 @@ export default function Portfolio() {
               alt={selectedImage.title || "Selected Image"}
               className="w-full h-full object-cover rounded-3xl"
             />
+            {selectedImage.title && (
+              <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-sm p-3 text-center rounded-b-3xl">
+                {selectedImage.title}
+              </div>
+            )}
             <button
               onClick={() => setSelectedImage(null)}
               className="absolute top-4 right-4"
