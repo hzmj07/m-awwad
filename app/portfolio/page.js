@@ -55,7 +55,7 @@ export default function Portfolio() {
         />
       </div>
       {selecetedImg && (
-        <div className="absolute inset-0 z-100 flex w-full h-full p-6 items-center justify-center bg-black/80">
+        <div className="absolute inset-0 z-100 flex w-full max-h-screen p-6 items-center justify-center bg-black/80">
           <div className="relative w-full max-w-5xl aspect-video flex items-center justify-center">
             <img
               src={selecetedImg.link}
