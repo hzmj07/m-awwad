@@ -1,17 +1,19 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Layout from "../components/Layout";
-import { StrictMode } from 'react'
-
+import { StrictMode } from "react";
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "700"],
+  variable: "--font-geist-sans",
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
+  variable: "--font-geist-mono",
 });
 
 export const metadata = {
@@ -21,12 +23,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className="antialiased" style={{ fontFamily: "var(--font-geist-sans), sans-serif" }}>
         <StrictMode>
-           <Layout>{children}</Layout>
+          <Layout>{children}</Layout>
         </StrictMode>
       </body>
     </html>
